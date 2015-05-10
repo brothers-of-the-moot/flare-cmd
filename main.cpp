@@ -22,10 +22,12 @@ int main(int argc, char *argv[])
         prevValue = value;
     }
     QFileInfo fileInfo = QFileInfo(mapFilename);
-    QString path =   fileInfo.canonicalPath() + QString("/../");
-    QString typePath = path + QString(objectType);
+    QString typePath = fileInfo.canonicalPath() + QString("/../") + QString(objectType);
+    if (!QFile::exists (typePath) ) {
+        QString appPath = QFileInfo(QCoreApplication::applicationFilePath()).canonicalPath();
+        QFile::copy( appPath + "/flare-dialog-template.txt", typePath);
+    }
     QString urlPath = "file://" + typePath;
     QDesktopServices::openUrl(urlPath);
-
-	return a.exec();
+    return a.exec();
 }
